@@ -247,6 +247,12 @@ function topProductosPorValor(ventas, k) {
 }
 
 
+function ventasDelDia(ventas, fecha) {
+    return ventas.filter(venta => venta.fecha === fecha);
+}
+
+
+
 
 module.exports = {
     valorVenta,
@@ -255,12 +261,11 @@ module.exports = {
     ventaMayor,
     ticketPromedio,
     ventasPorCiudad,
-
     totalVendidoM,
     unidadesVendidasM,
     ventasPorCiudadM,
-
     totalPorCiudad,
     unidadesPorProducto,
-    topProductosPorValor
+    topProductosPorValor,
+    ventasDelDia
 };

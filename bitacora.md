@@ -173,3 +173,53 @@ Función topProductosPorValor()
 - ¿Qué transformo? Convierto los datos agrupados en objetos con producto y total.
 - ¿Qué acumulo? El dinero generado por cada producto.
 - ¿Cómo agrupo? Agrupo las ventas por producto, ordeno los resultados de mayor a menor y selecciono los primeros K.
+
+Error 1. Bogotá aparecía dos veces
+
+Síntoma: Bogotá aparecía dos veces en el reporte de ventas por ciudad.
+
+Entrada que lo produce:
+
+const ciudadesPrueba = [
+    {
+        ciudad: "Bogotá",
+        cantidad: 1,
+        precio: 26000
+    },
+    {
+        ciudad: "Bogotá ",
+        cantidad: 2,
+        precio: 26000
+    }
+];
+
+Hipótesis: los nombres de las ciudades se estaban comparando sin eliminar los espacios sobrantes.
+
+Prueba realizada: utilizar trim() para quitar espacios y toLowerCase() para unificar mayúsculas y minúsculas.
+
+Causa: el programa consideraba "Bogotá" y "Bogotá " como dos nombres diferentes.
+
+Corrección: normalizar el nombre antes de utilizarlo como clave de agrupación.
+
+Error 2. Ticket promedio daba NaN
+
+Síntoma: al consultar una fecha sin ventas, el ticket promedio mostraba NaN.
+
+Entrada que lo produce:
+
+const ventasDia = [];
+
+const promedio = ventasDia.reduce(
+    (total, venta) => total + valorVenta(venta),
+    0
+) / ventasDia.length;
+
+console.log(promedio);
+
+Hipótesis: el programa estaba dividiendo entre cero porque el arreglo no tenía registros.
+
+Prueba realizada: ejecutar la función ventasDelDia() con una fecha que no aparece en los datos.
+
+Causa: el programa no verificaba si existían ventas válidas antes de dividir.
+
+Corrección: utilizar una condición ternaria:

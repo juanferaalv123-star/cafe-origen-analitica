@@ -29,3 +29,34 @@ function probar(datos, nombre) {
 probar(ventas, "ARREGLO COMPLETO");
 probar(unRegistro, "UN SOLO REGISTRO");
 probar(arregloVacio, "ARREGLO VACÍO");
+
+//error de la gerente
+const ventas = require("./venta");
+
+const ciudadesPrueba = [
+    {
+        ciudad: "Bogotá",
+        cantidad: 1,
+        precio: 26000
+    },
+    {
+        ciudad: "Bogotá ",
+        cantidad: 2,
+        precio: 26000
+    }
+];
+
+const resultado = totalPorCiudad(ciudadesPrueba);
+
+console.log("Prueba de ciudades:");
+console.log(resultado);
+
+console.log(
+    "¿Existe un solo grupo de Bogotá?",
+    Object.keys(resultado).length === 1 ? "OK" : "DIFERENTE"
+);
+
+
+const promedio = validas.length > 0
+    ? total / validas.length
+    : 0;

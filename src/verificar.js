@@ -43,3 +43,6 @@ verificar(
     ventasPorCiudad(ventas, "Medellín"),
     ventasPorCiudadM(ventas, "Medellín")
 );
+
+
+
