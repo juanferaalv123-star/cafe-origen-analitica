@@ -1,4 +1,4 @@
-const ventas = require("./ventas");
+const ventas = require("./datos");
 
 
 
