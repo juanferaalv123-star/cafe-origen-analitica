@@ -135,3 +135,41 @@ ID	Cantidad	Unidades acumuladas
 10	4	17
 11	1	18
 12	3	21
+
+
+Función totalVendidoM()
+- ¿Qué recorro? Todas las ventas del arreglo.
+- ¿Qué filtro? No aplico ningún filtro.
+- ¿Qué transformo? Calculo el valor de cada venta multiplicando cantidad por precio.
+- ¿Qué acumulo? El dinero total vendido.
+- ¿Cómo agrupo? No agrupo, solamente sumo todas las ventas.
+Función unidadesVendidasM()
+- ¿Qué recorro? Todas las ventas.
+- ¿Qué filtro? No aplico filtros.
+- ¿Qué transformo? No transformo los registros.
+- ¿Qué acumulo? La cantidad de unidades vendidas.
+- ¿Cómo agrupo? No agrupo, sumo todas las cantidades.
+Función ventasPorCiudadM()
+- ¿Qué recorro? Todas las ventas.
+- ¿Qué filtro? Las ventas que pertenecen a una ciudad específica.
+- ¿Qué transformo? Normalizo los nombres de las ciudades.
+- ¿Qué acumulo? El dinero vendido en la ciudad seleccionada.
+- ¿Cómo agrupo? Reúno las ventas que pertenecen a la misma ciudad.
+Función totalPorCiudad()
+- ¿Qué recorro? Todas las ventas.
+- ¿Qué filtro? No aplico filtros.
+- ¿Qué transformo? Normalizo los nombres de las ciudades.
+- ¿Qué acumulo? El dinero vendido por ciudad.
+- ¿Cómo agrupo? Agrupo las ventas utilizando el nombre de cada ciudad.
+Función unidadesPorProducto()
+- ¿Qué recorro? Todas las ventas.
+- ¿Qué filtro? No aplico filtros.
+- ¿Qué transformo? Identifico el producto de cada venta.
+- ¿Qué acumulo? Las unidades vendidas de cada producto.
+- ¿Cómo agrupo? Agrupo las ventas según el nombre del producto.
+Función topProductosPorValor()
+- ¿Qué recorro? Todas las ventas.
+- ¿Qué filtro? No filtro las ventas inicialmente; al final selecciono los primeros K productos.
+- ¿Qué transformo? Convierto los datos agrupados en objetos con producto y total.
+- ¿Qué acumulo? El dinero generado por cada producto.
+- ¿Cómo agrupo? Agrupo las ventas por producto, ordeno los resultados de mayor a menor y selecciono los primeros K.
