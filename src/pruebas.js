@@ -7,7 +7,8 @@ const {
     unidadesVendidas,
     ventaMayor,
     ticketPromedio,
-    ventasPorCiudad
+    ventasPorCiudad,
+    totalPorCiudad
 } = require("./analitica");
 
 // Arreglos de prueba
@@ -30,9 +31,7 @@ probar(ventas, "ARREGLO COMPLETO");
 probar(unRegistro, "UN SOLO REGISTRO");
 probar(arregloVacio, "ARREGLO VACÍO");
 
-//error de la gerente
-const ventas = require("./venta");
-
+// Error de la gerente: prueba de ciudades
 const ciudadesPrueba = [
     {
         ciudad: "Bogotá",
@@ -56,7 +55,16 @@ console.log(
     Object.keys(resultado).length === 1 ? "OK" : "DIFERENTE"
 );
 
+// Calcular promedio de ventas válidas
+const validas = ventas.filter(venta => venta.cantidad > 0);
+
+const total = validas.reduce(
+    (acumulado, venta) => acumulado + valorVenta(venta),
+    0
+);
 
 const promedio = validas.length > 0
     ? total / validas.length
     : 0;
+
+console.log("Promedio de ventas válidas:", promedio);
