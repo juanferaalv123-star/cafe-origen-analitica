@@ -252,6 +252,128 @@ function ventasDelDia(ventas, fecha) {
 }
 
 
+function totalVendidoInstrumentado(ventas, contador) {
+  let total = 0;
+
+  for (const venta of ventas) {
+    contador.operaciones++; // Visita un elemento
+    total += venta.cantidad * venta.precio;
+  }
+
+  return total;
+}
+
+function ventaMayorInstrumentada(ventas, contador) {
+  if (ventas.length === 0) return null;
+
+  let mayor = ventas[0];
+
+  for (const venta of ventas) {
+    contador.operaciones++; // Visita un elemento
+
+    contador.operaciones++; // Realiza una comparación
+    if (venta.cantidad * venta.precio >
+        mayor.cantidad * mayor.precio) {
+      mayor = venta;
+    }
+  }
+
+  return mayor;
+}
+
+function totalPorCiudadInstrumentado(ventas, contador) {
+  const acumulado = {};
+
+  for (const venta of ventas) {
+    contador.operaciones++; // Visita un elemento
+
+    const clave = venta.ciudad.trim().toLowerCase();
+
+    contador.operaciones++; // Comprueba si existe el grupo
+    if (!acumulado[clave]) {
+      acumulado[clave] = {
+        ciudad: venta.ciudad.trim(),
+        total: 0
+      };
+    }
+
+    acumulado[clave].total += venta.cantidad * venta.precio;
+  }
+
+  return acumulado;
+}
+
+function primeraVenta(ventas, contador) {
+  contador.operaciones++;
+  return ventas.length > 0 ? ventas[0] : null;
+}
+
+module.exports.totalVendidoInstrumentado = totalVendidoInstrumentado;
+module.exports.ventaMayorInstrumentada = ventaMayorInstrumentada;
+module.exports.totalPorCiudadInstrumentado = totalPorCiudadInstrumentado;
+module.exports.primeraVenta = primeraVenta;
+
+
+function clientesRecurrentes(ventas) {
+  const recurrentes = [];
+
+  for (let i = 0; i < ventas.length; i++) {
+    for (let j = i + 1; j < ventas.length; j++) {
+      if (
+        ventas[i].cliente === ventas[j].cliente &&
+        !recurrentes.includes(ventas[i].cliente)
+      ) {
+        recurrentes.push(ventas[i].cliente);
+      }
+    }
+  }
+
+  return recurrentes;
+}
+module.exports = {
+  
+  clientesRecurrentes
+};
+
+const ventas = require("./datos");
+const { clientesRecurrentes } = require("./analitica");
+
+console.log("Clientes recurrentes:");
+console.log(clientesRecurrentes(ventas));
+
+
+function totalCiudadCadena(ventas, ciudad) {
+  const ciudadBuscada = ciudad.trim().toLowerCase();
+
+  return ventas
+    .map(venta => ({
+      ...venta,
+      ciudad: venta.ciudad.trim().toLowerCase()
+    }))
+    .filter(venta => venta.ciudad === ciudadBuscada)
+    .map(venta => venta.cantidad * venta.precio)
+    .reduce((total, valor) => total + valor, 0);
+}
+
+
+
+function totalCiudadUnaPasada(ventas, ciudad) {
+  const ciudadBuscada = ciudad.trim().toLowerCase();
+  let total = 0;
+
+  for (const venta of ventas) {
+    const ciudadVenta = venta.ciudad.trim().toLowerCase();
+
+    if (ciudadVenta === ciudadBuscada) {
+      total += venta.cantidad * venta.precio;
+    }
+  }
+
+  return total;
+}
+
+
+
 
 
 module.exports = {
@@ -267,5 +389,7 @@ module.exports = {
     totalPorCiudad,
     unidadesPorProducto,
     topProductosPorValor,
-    ventasDelDia
+    ventasDelDia,
+    totalCiudadCadena,
+totalCiudadUnaPasada
 };

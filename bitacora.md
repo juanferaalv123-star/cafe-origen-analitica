@@ -222,4 +222,173 @@ Prueba realizada: ejecutar la función ventasDelDia() con una fecha que no apare
 
 Causa: el programa no verificaba si existían ventas válidas antes de dividir.
 
-Corrección: utilizar una condición ternaria:
+Corrección: utilizar una condición ternaria
+
+
+### Predicción del crecimiento de operaciones
+
+Antes de realizar las pruebas, considero que `totalVendido`, `ventaMayor` y `totalPorCiudad` tendrán un crecimiento lineal, porque necesitan recorrer todos los elementos del arreglo para completar su trabajo.
+
+Por lo tanto, si la cantidad de ventas se multiplica por 10, espero que sus operaciones también aumenten aproximadamente 10 veces.
+
+En cambio, `primeraVenta` tendrá un crecimiento constante, porque solamente consulta la primera posición del arreglo, sin importar cuántos registros existan. Por eso, si los datos se multiplican por 10, sus operaciones deberían mantenerse iguales.
+
+Mi predicción es que las tres funciones que recorren el arreglo serán O(n), mientras que `primeraVenta` será O(1). No espero encontrar una función O(n²) en esta prueba.
+
+### Comparación de predicciones y resultados
+
+Al comparar mi predicción con los resultados obtenidos, puedo observar que se cumple el crecimiento esperado.
+
+Cuando las ventas pasan de 100 a 1.000, las operaciones de `totalVendido`, `ventaMayor` y `totalPorCiudad` aumentan aproximadamente 10 veces. Lo mismo sucede cuando se pasa de 1.000 a 10.000 y de 10.000 a 100.000 registros.
+
+Por otro lado, `primeraVenta` mantiene una operación en todos los tamaños, demostrando que su trabajo no depende de la cantidad de registros.
+
+### Conclusión
+
+Las pruebas demuestran que no todas las funciones trabajan de la misma manera cuando aumenta la información. Las funciones que recorren el arreglo tienen complejidad lineal O(n), mientras que la función que accede directamente a la primera posición tiene complejidad constante O(1).
+
+Esto permite identificar qué funciones aumentan su trabajo al crecer los datos y estimar cómo se comportará el motor de análisis cuando tenga historiales mucho más grandes.
+
+!recurrentes.includes(ventas[i].cliente)
+
+
+includes() busca el cliente dentro del arreglo recurrentes. Si hay muchos clientes recurrentes, esa búsqueda puede revisar muchos elementos.
+
+Esto significa que no basta con contar los dos ciclos: también debemos contar las búsquedas internas.
+- Los ciclos anidados realizan \(n(n-1)/2\) comparaciones entre ventas.
+- includes() puede costar hasta O(r), donde r es el número de clientes recurrentes que ya se han guardado.
+- Si r crece con n, el costo adicional puede llegar a ser importante.
+En el peor caso, el costo total puede alcanzar O(n³), porque se pueden hacer O(n²) comprobaciones de coincidencia y cada llamada a includes() puede recorrer hasta O(n) elementos. En escenarios habituales, el crecimiento puede estar más cerca de O(n²), pero depende de cómo se distribuyan los clientes.
+
+Este detalle es importante: la complejidad no se determina solamente mirando cuántos ciclos hay, sino también qué operaciones se ejecutan dentro de ellos.
+
+
+### Diagnóstico de clientes recurrentes
+
+**Problema identificado:**
+
+La función `clientesRecurrentes` funciona correctamente con los 12 registros iniciales, pero presenta problemas de rendimiento cuando aumenta la cantidad de ventas.
+
+**Traza:**
+
+Con un arreglo de 5 ventas, los ciclos realizan 10 comparaciones entre clientes. La fórmula general es:
+
+C(n) = n(n - 1) / 2.
+
+Esto demuestra que el número de comparaciones crece de manera cuadrática.
+
+**Medición del tiempo:**
+
+Se realizaron pruebas con 1.000, 2.000, 4.000, 8.000 y 16.000 ventas. Los tiempos se registraron utilizando `console.time()` y `console.timeEnd()`.
+
+| Ventas | Tiempo |
+|---:|---:|
+| 1.000 | Completar |
+| 2.000 | Completar |
+| 4.000 | Completar |
+| 8.000 | Completar |
+| 16.000 | Completar |
+
+**Análisis:**
+
+Cuando se duplica la cantidad de ventas, el número de comparaciones entre pares se multiplica aproximadamente por cuatro. Esto corresponde al comportamiento de una función O(n²).
+
+También se identificó un costo adicional en `recurrentes.includes()`, ya que realiza búsquedas dentro de otro arreglo. En el peor caso, esta búsqueda puede hacer que el costo total llegue a O(n³).
+
+**Estimación:**
+
+A partir del tiempo medido con 16.000 ventas, se estimó el tiempo necesario para procesar 100.000 y 1.000.000 de ventas. La estimación se realizó suponiendo un crecimiento cuadrático y teniendo en cuenta que el costo adicional de `includes()` puede modificar el resultado.
+
+**Conclusión:**
+
+La función cumple su objetivo, pero no está preparada para procesar historiales muy grandes de manera eficiente. Su forma de comparar las ventas genera demasiado trabajo y las búsquedas adicionales aumentan el costo. Por eso es necesario mejorar su implementación antes de utilizarla con historiales anuales.
+
+El reporte de clientes recurrentes se demora porque compara las ventas entre sí para descubrir cuáles pertenecen a un mismo cliente. Cuando hay pocas ventas, el proceso es rápido, pero cuando el historial crece, la cantidad de comparaciones aumenta considerablemente.
+
+Además, cada vez que encuentra un cliente repetido, realiza otra búsqueda para comprobar si ya lo había registrado.
+
+Esto provoca que el reporte tarde cada vez más en entregar los resultados. Recomendamos mejorar la forma en que se organizan y consultan los clientes para que el sistema pueda procesar grandes historiales sin demoras excesivas.
+
+El reporte de clientes recurrentes se demora porque compara las ventas entre sí para descubrir cuáles pertenecen a un mismo cliente. Cuando hay pocas ventas, el proceso es rápido, pero cuando el historial crece, la cantidad de comparaciones aumenta considerablemente.
+
+Además, cada vez que encuentra un cliente repetido, realiza otra búsqueda para comprobar si ya lo había registrado.
+
+Esto provoca que el reporte tarde cada vez más en entregar los resultados. Recomendamos mejorar la forma en que se organizan y consultan los clientes para que el sistema pueda procesar grandes historiales sin demoras excesivas.
+
+
+
+El reporte de clientes recurrentes se demora porque compara las ventas entre sí para descubrir cuáles pertenecen a un mismo cliente. Cuando hay pocas ventas, el proceso es rápido, pero cuando el historial crece, la cantidad de comparaciones aumenta considerablemente.
+
+Además, cada vez que encuentra un cliente repetido, realiza otra búsqueda para comprobar si ya lo había registrado.
+
+Esto provoca que el reporte tarde cada vez más en entregar los resultados. Recomendamos mejorar la forma en que se organizan y consultan los clientes para que el sistema pueda procesar grandes historiales sin demoras excesivas.
+
+Característica	totalCiudadCadena	totalCiudadUnaPasada
+Etapas de recorrido	4	1
+Recorridos sobre todas las ventas	2	1
+Recorridos sobre las ventas filtradas	Hasta 2	0
+Arreglos intermedios	3	0
+Complejidad temporal	O(n)	O(n)
+Complejidad espacial adicional	O(n)	O(1)
+
+¿Por qué ambas son O(n) si una recorre el arreglo cuatro veces?
+
+Porque en Big O se eliminan las constantes. Si una función realiza cuatro recorridos proporcionales a n, su crecimiento sigue siendo lineal. Por ejemplo:
+\[
+4n \rightarrow O(n)
+\]
+
+La diferencia está en que la versión encadenada hace más trabajo constante y reserva más memoria, aunque las dos tengan el mismo orden de crecimiento temporal.
+
+
+Complejidad espacial de las funciones del motor
+La complejidad espacial mide cuánta memoria adicional necesita una función cuando aumenta la cantidad de datos.
+Función	Espacio adicional	Motivo
+valorVenta	O(1)	Solo calcula y devuelve un número.
+totalVendido	O(1)	Mantiene un acumulador.
+unidadesVendidas	O(1)	Mantiene un acumulador.
+ventaMayor	O(1)	Guarda una referencia al mayor registro.
+ticketPromedio	O(1)	Usa total y contador.
+ventasPorCiudad	O(1)	Usa un acumulador.
+totalVendidoM	O(1)	reduce acumula un número.
+unidadesVendidasM	O(1)	reduce acumula un número.
+ventasPorCiudadM	O(n)	filter crea un arreglo nuevo.
+totalPorCiudad	O(k)	Crea un grupo por cada ciudad diferente.
+unidadesPorProducto	O(p)	Crea una propiedad por producto diferente.
+topProductosPorValor	O(p)	Crea un objeto, entradas, resultados ordenados y un top.
+ventasDelDia	O(n)	filter crea arreglos de resultados.
+totalCiudadCadena	O(n)	Crea tres arreglos intermedios.
+totalCiudadUnaPasada	O(1)	Solo utiliza variables acumuladoras.
+generarVentas	O(n)	Construye un arreglo de n ventas.
+clientesRecurrentes	O(n)	Almacena los clientes recurrentes.
+
+### Análisis de complejidad espacial: reporte por ciudad
+
+**Comparación de las dos versiones**
+
+La función `totalCiudadCadena` utiliza cuatro métodos: `map`, `filter`, `map` y `reduce`. Aunque el código es fácil de leer, crea tres arreglos intermedios durante el procesamiento. Esto aumenta el consumo de memoria cuando el historial de ventas crece.
+
+La función `totalCiudadUnaPasada` utiliza un solo ciclo `for...of`. En cada iteración normaliza la ciudad, comprueba si coincide y suma el valor de la venta. No necesita crear arreglos adicionales.
+
+**Complejidad temporal**
+
+Las dos funciones tienen complejidad O(n), porque procesan una cantidad de elementos proporcional al tamaño del arreglo. Aunque la versión encadenada realiza cuatro etapas, las constantes se eliminan al expresar la complejidad Big O.
+
+**Complejidad espacial**
+
+La versión encadenada tiene complejidad O(n), porque crea arreglos intermedios cuyo tamaño depende de la cantidad de ventas.
+
+La versión de una pasada tiene complejidad O(1), porque solamente utiliza variables para almacenar la ciudad buscada y el total acumulado.
+
+**Decisión técnica**
+
+Decidí conservar `totalCiudadUnaPasada` en el motor principal. Aunque la versión encadenada puede resultar más sencilla de leer, la versión de una pasada consume menos memoria y evita crear estructuras temporales.
+
+Esta decisión es importante porque el marketplace trabajará con historiales grandes y tendrá recursos de servidor limitados. Por eso, prefiero reducir las asignaciones de memoria sin cambiar el resultado de la operación.
+
+### Conclusión
+
+La complejidad temporal no es el único aspecto que debemos analizar al desarrollar un programa. También debemos tener en cuenta la memoria que necesita para trabajar.
+
+Dos funciones pueden tener la misma complejidad temporal O(n), pero consumir cantidades diferentes de memoria. En este caso, la versión de una pasada es más conveniente porque realiza el cálculo directamente y evita crear arreglos innecesarios.
+
